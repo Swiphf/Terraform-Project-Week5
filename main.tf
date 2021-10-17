@@ -267,10 +267,18 @@ resource "azurerm_lb_rule" "lb_rule_open_HTTP" {
 }
 
 # This block creates the nic association with the network security group
-resource "azurerm_network_interface_security_group_association" "nic-association-nsg" {
+resource "azurerm_network_interface_security_group_association" "nic-association-nsg-app" {
   count = var.app_nic_associations_count
 
   network_interface_id      = module.virtual_machines_app.*.nic_ids[count.index].id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+
+# This block creates the nic association with the network security group
+resource "azurerm_network_interface_security_group_association" "nic-association-nsg-db" {
+  count = var.db_nic_associations_count
+
+  network_interface_id      = module.virtual_machines_db.*.nic_ids[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
@@ -311,13 +319,6 @@ resource "azurerm_postgresql_server" "psql_server" {
   version                      = "11"
   ssl_enforcement_enabled      = false
 }
-
-# resource "azurerm_postgresql_database" "psql_db" {
-#   name                = var.psql_name
-#   resource_group_name = var.resource_group_name
-#   server_name         = azurerm_postgresql_server.psql_server.name
-#   charset             = var.charset
-# }
 
 #Create Postgres firewall rule
 resource "azurerm_postgresql_firewall_rule" "postgres_firewall" {

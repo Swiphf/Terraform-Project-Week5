@@ -45,7 +45,8 @@ resource "azurerm_network_interface" "nic" {
 
 
   ip_configuration {
-    name                          = var.machine_type == "app" ? "ip_configuration" : "ip_configuration_db"
+    name      = var.machine_type == "app" ? "ip_configuration" : "ip_configuration_db"
+    # subnet_id = var.machine_type == "app" ? "" : ""
     subnet_id                     = var.snet_id
     private_ip_address_allocation = "Dynamic"
   }

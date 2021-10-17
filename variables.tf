@@ -110,10 +110,16 @@ variable "lb_backend_address_pool_name" {
   description = "variable for lb backend address pool name "
 }
 
-# This block defines the amount of the nics that willve created for the app virtual machines
+# This block defines the amount of the nics that will be created for the app virtual machines
 variable "app_nic_associations_count" {
   type        = number
   description = "number of instances of a nic to create for app"
+}
+
+# This block defines the amount of the nics that will be created for the db virtual machines
+variable "db_nic_associations_count" {
+  type        = number
+  description = "number of instances of a nic to create for db"
 }
 
 # This block defines the charset
